@@ -1,0 +1,108 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Material App',
+      home: Scaffold(
+        backgroundColor: Colors.lightGreenAccent,
+        appBar: AppBar(
+          title: Text('Oktaviana Br Sinuhaji (5SIA1)'),
+        ),
+        body: MyList(),
+      ),
+    );
+  }
+}
+
+class MyList extends StatefulWidget {
+  _MyListState createState() => _MyListState();
+}
+
+class _MyListState extends State<MyList> {
+  final List<Music> msc = MusicList.getMusic();
+
+  Widget build(BuildContext context) {
+    return Container(
+      child: msc.length > 0
+          ? ListView.builder(
+              itemCount: msc.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Dismissible(
+                  onDismissed: (DismissDirection direction) {
+                    setState(() {
+                      msc.removeAt(index);
+                    });
+                  },
+                  secondaryBackground: Container(
+                    child: Center(
+                      child: Text(
+                        'Delete',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    color: Colors.red,
+                  ),
+                  background: Container(),
+                  child: MusicCard(music: msc[index]),
+                  key: UniqueKey(),
+                  direction: DismissDirection.endToStart,
+                );
+              },
+            )
+          : Center(child: Text('No Items')),
+    );
+  }
+}
+
+// Objek Model
+class Music {
+  String artis;
+  String judul;
+  String durasi;
+  String fotoURL;
+
+  Music({this.artis, this.judul, this.durasi, this.fotoURL});
+}
+
+// Objek Data
+class MusicList {
+  static List<Music> getMusic() {
+    return [
+      Music(
+        artis: 'Ed Sheeran',
+        judul: 'Photograph',
+        durasi: '4.35',
+        fotoURL:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRTnxaW-7syP8ZeH2RPiD7XC1tPHL-G9tyeWw&usqp=CAU',
+      ),
+    ];
+  }
+}
+
+//Objek View
+class MusicCard extends StatelessWidget {
+  final Music music;
+
+  MusicCard({this.music});
+
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(music.fotoURL),
+            ),
+            title: Text(music.artis),
+            subtitle: Text(music.judul),
+            trailing: Text(music.durasi),
+          )
+        ],
+      ),
+    );
+  }
+}
