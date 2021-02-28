@@ -1,0 +1,67 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(App12());
+
+class App12 extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Program Menghitung Luas Persegi',
+      home: Scaffold(
+        backgroundColor: Colors.cyanAccent,
+        appBar: AppBar(
+          title: Text(
+            'Oktaviana Br Sinuhaji (5SIA1)',
+            style: TextStyle(fontSize: 26, fontFamily: "Serif", height: 2.0),
+          ),
+          backgroundColor: Colors.pinkAccent,
+        ),
+        body: OktavianaApp(),
+      ),
+    );
+  }
+}
+
+class OktavianaApp extends StatefulWidget {
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<OktavianaApp> {
+  final txtpanjang = TextEditingController();
+  final txtlebar = TextEditingController();
+
+  String hasil = '';
+
+  onHitung() {
+    setState(() {
+      var luas = int.parse(txtpanjang.text) * int.parse(txtlebar.text);
+      hasil = "Luas Persegi = $luas";
+    });
+  }
+
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20.0),
+      child: Column(
+        children: <Widget>[
+          TextField(
+            controller: txtpanjang,
+            decoration: new InputDecoration(
+              labelText: "Input Panjang",
+            ),
+          ),
+          TextField(
+            controller: txtlebar,
+            decoration: new InputDecoration(
+              labelText: "Input Lebar",
+            ),
+          ),
+          RaisedButton(
+            child: Text("Hitung"),
+            onPressed: onHitung,
+          ),
+          Text(hasil),
+        ],
+      ),
+    );
+  }
+}
