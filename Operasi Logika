@@ -1,0 +1,85 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(App12());
+
+class App12 extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Program Menghitung Billing Warnet',
+      home: Scaffold(
+        backgroundColor: Colors.cyanAccent,
+        appBar: AppBar(
+          title: Text(
+            'Oktaviana Br Sinuhaji (5SIA1)',
+            style: TextStyle(fontSize: 26, fontFamily: "Serif", height: 2.0),
+          ),
+          backgroundColor: Colors.pinkAccent,
+        ),
+        body: OktavianaApp(),
+      ),
+    );
+  }
+}
+
+class OktavianaApp extends StatefulWidget {
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<OktavianaApp> {
+  final txtnama = TextEditingController();
+  final txtjmasuk = TextEditingController();
+  final txtjkeluar = TextEditingController();
+  final txttarif = TextEditingController();
+
+  String hasil = '';
+
+  onHitung() {
+    setState(() {
+      var lama = int.parse(txtjkeluar.text) - int.parse(txtjmasuk.text);
+      var total = int.parse(txttarif.text) * lama;
+
+      hasil = "Lama net = $lama jam\nBiaya ${txtnama.text} adalah Rp.$total";
+
+      if (lama > 3) hasil = hasil + "\nBonus Teh Botol";
+    });
+  }
+
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20.0),
+      child: Column(
+        children: <Widget>[
+          TextField(
+            controller: txtnama,
+            decoration: new InputDecoration(
+              labelText: "Nama User",
+            ),
+          ),
+          TextField(
+            controller: txtjmasuk,
+            decoration: new InputDecoration(
+              labelText: "Jam Masuk",
+            ),
+          ),
+          TextField(
+            controller: txtjkeluar,
+            decoration: new InputDecoration(
+              labelText: "Jam Keluar",
+            ),
+          ),
+          TextField(
+            controller: txttarif,
+            decoration: new InputDecoration(
+              labelText: "Tarif perjam",
+            ),
+          ),
+          RaisedButton(
+            child: Text("Hitung"),
+            onPressed: onHitung,
+          ),
+          Text(hasil),
+        ],
+      ),
+    );
+  }
+}
