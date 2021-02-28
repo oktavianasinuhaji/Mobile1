@@ -1,0 +1,219 @@
+import 'package:flutter/material.dart';
+
+class Dosen {
+  String namadosen;
+  String jkelamin;
+  String matkul;
+
+  Dosen({this.namadosen, this.jkelamin, this.matkul});
+}
+
+void main() {
+  runApp(new MaterialApp(
+    debugShowCheckedModeBanner: false,
+
+    home: new HomePage(),
+    //Mendefinisikan Routing yang mengatur halaman app
+    routes: {
+      '/mahasiswa': (BuildContext context) => Mahasiswa(),
+      '/dosen': (BuildContext context) => Informasi(),
+      '/program': (BuildContext context) => UAS2(),
+    },
+  ));
+}
+
+class HomePage extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        backgroundColor: Colors.brown,
+        appBar: new AppBar(
+          title: new Text("UAS MOBILE1 (5SIA1)"),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.face),
+                tooltip: 'Mahasiswa',
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/mahasiswa");
+                }),
+            IconButton(
+                icon: Icon(Icons.account_box),
+                tooltip: 'Dosen',
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/dosen");
+                }),
+            IconButton(
+                icon: Icon(Icons.calculate_rounded),
+                tooltip: 'PROGRAM MATEMATIKA',
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/program");
+                }),
+          ],
+        ),
+        body: Center(
+          child: Text('Welcome My App',
+              style: TextStyle(
+                  fontSize: 32, fontFamily: "Matura MT Script Capitals")),
+        ));
+  }
+}
+
+//class MahasiswaPage
+class Mahasiswa extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        backgroundColor: Colors.pinkAccent,
+        appBar: new AppBar(
+          title: new Text("Mahasiswa"),
+        ),
+        body: Center(
+          child: Column(children: <Widget>[
+            Image.network(
+                'https://lh3.googleusercontent.com/a-/AOh14GjwayDzLM3w6QXjVgK-9ZSzWbcDr-qgqFlcE4Qs_Q=s192-c-rg-br100'),
+            Text(
+              'Name : Oktaviana Br Sinuhaji',
+              style: TextStyle(fontSize: 16, fontFamily: "Serif", height: 2.0),
+            ),
+            Text(
+              'Address : LK.I Deli Tua Pamah Gg.Amri',
+              style: TextStyle(fontSize: 16, fontFamily: "Serif", height: 2.0),
+            ),
+            Text(
+              'Hobby : Photography, travelling, listening to music',
+              style: TextStyle(fontSize: 16, fontFamily: "Serif", height: 2.0),
+            ),
+            Text(
+              'Class : 5SIA1',
+              style: TextStyle(fontSize: 16, fontFamily: "Serif", height: 2.0),
+            ),
+          ]),
+        ));
+  }
+}
+
+//class DosenPage
+class Informasi extends StatelessWidget {
+  //deklarasi variabel & fungsi
+  final Dosen data;
+  final dosen = [
+    Dosen(namadosen: 'Nurcahyo', jkelamin: 'Laki-laki', matkul: 'mobile1'),
+  ];
+  //Constructor Informasi
+  Informasi({this.data});
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.yellowAccent,
+      appBar: AppBar(
+        title: Text('Informasi Dosen'),
+      ),
+      //body
+      body: ListView.builder(
+        itemCount: dosen.length,
+        itemBuilder: (context, index) {
+          final mhs = dosen[index];
+          return ListTile(
+            leading: Icon(Icons.people),
+            title: Text(mhs.namadosen),
+            subtitle: Text(mhs.jkelamin),
+            trailing: Text(mhs.matkul),
+          );
+        },
+      ),
+      //floatingActionButton
+      floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(Icons.add),
+        label: Text('New Dosen'),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => InputData()));
+        },
+      ),
+    );
+  }
+}
+
+class InputData extends StatefulWidget {
+  createState() => _InputDataState();
+}
+
+class _InputDataState extends State<InputData> {
+  //deklarasi variabel & fungsi
+  final data = Dosen(
+    namadosen: 'Akmal',
+    jkelamin: 'Laki-laki',
+    matkul: 'Teknik',
+  );
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Input Data Mahasiswa"),
+      ),
+      //body
+      body: RaisedButton(
+        child: Text("Simpan"),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => InputData()));
+        },
+      ),
+    );
+  }
+}
+
+//class Program
+class UAS2 extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      backgroundColor: Colors.greenAccent,
+      appBar: new AppBar(
+        title: new Text("PROGRAM PERHITUNGAN"),
+      ),
+      body: OktavianaApp(),
+    );
+  }
+}
+
+class OktavianaApp extends StatefulWidget {
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<OktavianaApp> {
+  final txtpanjang = TextEditingController();
+  final txtlebar = TextEditingController();
+
+  String hasil = '';
+
+  onHitung() {
+    setState(() {
+      var luas = int.parse(txtpanjang.text) * int.parse(txtlebar.text);
+      hasil = 'Luas Persegi = $luas';
+    });
+  }
+
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20.0),
+      child: Column(
+        children: <Widget>[
+          TextField(
+            controller: txtpanjang,
+            decoration: new InputDecoration(
+              labelText: "Panjang",
+            ),
+          ),
+          TextField(
+            controller: txtlebar,
+            decoration: new InputDecoration(
+              labelText: "Lebar",
+            ),
+          ),
+          RaisedButton(
+            child: Text("Hitung"),
+            onPressed: onHitung,
+          ),
+          Text("$hasil"),
+        ],
+      ),
+    );
+  }
+}
