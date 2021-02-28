@@ -1,0 +1,120 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Material App',
+      home: Scaffold(
+        backgroundColor: Colors.lightGreenAccent,
+        appBar: AppBar(
+          title: Text('Oktaviana Br Sinuhaji (5SIA1)'),
+        ),
+        body: MyList(),
+      ),
+    );
+  }
+}
+
+class MyList extends StatefulWidget {
+  _MyListState createState() => _MyListState();
+}
+
+class _MyListState extends State<MyList> {
+  final List<Music> msc = MusicList.getMusic();
+
+  Widget build(BuildContext context) {
+    return Container(
+      child: msc.length > 0
+          ? ListView.builder(
+              itemCount: msc.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Dismissible(
+                  onDismissed: (DismissDirection direction) {
+                    setState(() {
+                      msc.removeAt(index);
+                    });
+                  },
+                  secondaryBackground: Container(
+                    child: Center(
+                      child: Text(
+                        'Delete',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    color: Colors.red,
+                  ),
+                  background: Container(),
+                  child: MusicCard(music: msc[index]),
+                  key: UniqueKey(),
+                  direction: DismissDirection.endToStart,
+                );
+              },
+            )
+          : Center(child: Text('No Items')),
+    );
+  }
+}
+
+// Objek Model
+class Music {
+  String artis;
+  String judul;
+  String durasi;
+  String fotoURL;
+
+  Music({this.artis, this.judul, this.durasi, this.fotoURL});
+}
+
+// Objek Data
+class MusicList {
+  static List<Music> getMusic() {
+    return [
+      Music(
+          artis: 'stephanie poetri',
+          judul: 'i love you 3000',
+          durasi: '3.30',
+          fotoURL:
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdVcJ9D1gtQPwu9Tcl1exbx3sJNMKBnBoheQ&usqp=CAU'),
+      Music(
+        artis: 'Ed Sheeran',
+        judul: 'Photograph',
+        durasi: '4.35',
+        fotoURL:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKi-nx_k93zfd9rPlNatMZO_7VcCQyp6m6Vg&usqp=CAU',
+      ),
+      Music(
+          artis: 'Charlie puth',
+          judul: 'One Call Away',
+          durasi: '4.02',
+          fotoURL: ''
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDmgxVCySWgSavpD5qbtc_avzHjUz-Xv_N0w&usqp=CAU'),
+    ];
+  }
+}
+
+//Objek View
+class MusicCard extends StatelessWidget {
+  final Music music;
+
+  MusicCard({this.music});
+
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(music.fotoURL),
+            ),
+            title: Text(music.artis),
+            subtitle: Text(music.judul),
+            trailing: Text(music.durasi),
+          )
+        ],
+      ),
+    );
+  }
+}
