@@ -1,0 +1,71 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(App10());
+
+class App10 extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.cyan,
+        appBar: AppBar(
+          title: Text(
+            'Oktaviana  Br  Sinuhaji  (5SIA1)',
+            style: TextStyle(
+              fontSize: 26,
+              fontFamily: "Poor Richard",
+            ),
+          ),
+          backgroundColor: Colors.pinkAccent,
+        ),
+        body: OktavianaApp(),
+      ),
+    );
+  }
+}
+
+class OktavianaApp extends StatefulWidget {
+  _OktavianaAppState createState() => _OktavianaAppState();
+}
+
+class _OktavianaAppState extends State<OktavianaApp> {
+  final txtnama = TextEditingController();
+  String _selected;
+  String hasil;
+
+  onProses() {
+    setState(() {
+      hasil = "${txtnama.text} memesan $_selected";
+    });
+  }
+
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+            controller: txtnama,
+            decoration: InputDecoration(
+              labelText: "Nama Pelanggan",
+            )),
+        DropdownButton(
+            value: _selected,
+            hint: Text('Pilih menu'),
+            items: ['Nasi goreng', 'Bakso', 'Sate'].map((choice) {
+              return DropdownMenuItem(
+                child: Text(choice),
+                value: choice,
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                _selected = value;
+              });
+            }),
+        RaisedButton(
+          child: Text("Proses"),
+          onPressed: onProses,
+        ),
+        Text("$hasil"),
+      ],
+    );
+  }
+}
